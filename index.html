@@ -9,6 +9,16 @@
 </head>
 
 <body>
+    <div class="setting">
+        <label for="grid-size">
+            Change grid (2–100):
+        </label>
+        <input type="range" id="grid-size" min="2" max="100" value="16">
+        <p>size: <span id="size-count">16</span> </p>
+        <button id="apply">Apply</button>
+        <button id="custom-grid">Custom Grid Size</button>
+        <button id="gridClear">Clear</button>
+    </div>
     <div id="root"></div>
     <script src="./script.js"></script>
 </body>
