@@ -1,3 +1,11 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  min-width: 500px;
+}
+
 #root {
   width: 640px;
   height: 640px;
@@ -7,7 +15,6 @@
 }
 
 .pixel {
-  width: 40px;
   aspect-ratio: 1;
   background: #7e7e7e;
   /* border-radius: 8px; */
