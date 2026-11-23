@@ -5,24 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Etch-a-Sketch</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 
 <body>
-    <div class="setting">
-        <label for="grid-size">
-            Change grid (2–100):
-        </label>
-        <input type="range" id="grid-size" min="2" max="100" value="16">
-        <p>size: <span id="size-count">16</span> </p>
-        <button id="apply">Apply</button>
-        <button id="custom-grid">Custom Grid Size</button>
-        <label>Random color: <input type="checkbox" id="random-color"></label>
-        <label>Progressive darkening: <input type="checkbox" id="shading-mode"></label>
-        <button id="gridClear">Clear</button>
-    </div>
-    <div id="root"></div>
-    <script src="./script.js"></script>
+    <aside class="setting">
+        <h1>Etch-a-Sketch</h1>
+
+        <div class="control-group">
+            <label for="grid-size">
+                Change grid (2–100): <span id="size-count">16</span>
+            </label>
+            <input type="range" id="grid-size" min="2" max="100" value="16">
+            <button type="button" id="apply">Apply</button>
+        </div>
+
+        <button type="button" id="custom-grid">Custom Grid Size</button>
+
+        <div class="checkbox-group">
+            <label for="random-color">
+                <input type="checkbox" id="random-color">
+                Random color
+            </label>
+
+            <label for="shading-mode">
+                <input type="checkbox" id="shading-mode">
+                Progressive darkening
+            </label>
+        </div>
+
+        <button type="button" id="gridClear" class="btn-clear">Clear</button>
+    </aside>
+
+    <main id="root"></main>
 </body>
 
 </html>

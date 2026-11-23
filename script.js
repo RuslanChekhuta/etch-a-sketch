@@ -1,86 +1,79 @@
 const container = document.getElementById("root");
 const gridSize = document.getElementById("grid-size");
 const sizeCount = document.getElementById("size-count");
-const apply = document.getElementById("apply");
-const btnClear = document.getElementById("gridClear");
-const customGrid = document.getElementById("custom-grid");
-const randomColor = document.getElementById("random-color");
-const shadingMode = document.getElementById("shading-mode");
+const applyBtn = document.getElementById("apply");
+const clearBtn = document.getElementById("gridClear");
+const customGridBtn = document.getElementById("custom-grid");
+const randomColorCheckbox = document.getElementById("random-color");
+const shadingModeCheckbox = document.getElementById("shading-mode");
 
-gridSize.addEventListener("change", (e) => {
-  sizeCount.textContent = e.target.value;
-});
-
-function setCustomGrid() {
-  let customValue = +prompt("Enter grid size (2–100)");
-  if (Number.isInteger(customValue) && customValue >= 2 && customValue <= 100) {
-    gridSize.value = customValue;
-    sizeCount.textContent = customValue;
-
-    populateGrid();
-  }
+function getRandomColor() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgb(${r}, ${g}, ${b})`;
 }
-
-customGrid.addEventListener("click", setCustomGrid);
 
 function populateGrid() {
   container.innerHTML = "";
-  let squaresCount = gridSize.value * gridSize.value;
+  const size = Number(gridSize.value);
+  const squaresCount = size * size;
+
   for (let i = 0; i < squaresCount; i++) {
     const pixel = document.createElement("div");
-    pixel.style.width = `calc(100% / ${gridSize.value})`;
+    pixel.style.width = `calc(100% / ${size})`;
     pixel.classList.add("pixel");
     pixel.dataset.count = "0";
     container.appendChild(pixel);
   }
-  console.log(container.children.length);
 }
 
-apply.addEventListener("click", populateGrid);
-
-function paintSquare(e) {
-  if (e.target !== e.currentTarget) {
-    if (shadingMode.checked) {
-      let count = Number(e.target.dataset.count);
-
-      if (count < 10) {
-        count++;
-        e.target.dataset.count = count;
-      }
-      e.target.style.opacity = count / 10;
-    } else {
-      e.target.dataset.count = 0;
-      e.target.style.opacity = "";
-    }
-
-    if (randomColor.checked) {
-      e.target.style.background = getRandomColor();
-    } else {
-      e.target.style.background = "black";
-    }
+function setCustomGrid() {
+  const customValue = Number(prompt("Enter grid size (2–100):"));
+  if (Number.isInteger(customValue) && customValue >= 2 && customValue <= 100) {
+    gridSize.value = customValue;
+    sizeCount.textContent = customValue;
+    populateGrid();
   }
 }
 
-function clear() {
-  const pixels = document.querySelectorAll(".pixel");
-  pixels.forEach((e) => {
-    e.style.background = "";
-    e.dataset.count = 0;
+function paintSquare(e) {
+  if (e.target === e.currentTarget) return;
 
-    e.style.opacity = "";
+  if (shadingModeCheckbox.checked) {
+    const currentCount = Number(e.target.dataset.count);
+    const nextCount = Math.min(currentCount + 1, 10);
+    e.target.dataset.count = nextCount;
+    e.target.style.opacity = nextCount / 10;
+  } else {
+    e.target.dataset.count = "0";
+    e.target.style.opacity = "";
+  }
+
+  e.target.style.background = randomColorCheckbox.checked
+    ? getRandomColor()
+    : "black";
+}
+
+function clearGrid() {
+  const pixels = document.querySelectorAll(".pixel");
+  pixels.forEach((pixel) => {
+    pixel.style.background = "";
+    pixel.style.opacity = "";
+    pixel.dataset.count = "0";
   });
 }
 
-function getRandomColor() {
-  return `rgb(${Math.floor(Math.random() * 256)} ${Math.floor(Math.random() * 256)} ${Math.floor(Math.random() * 256)})`;
-}
+// Event Listeners
+gridSize.addEventListener("input", (e) => {
+  sizeCount.textContent = e.target.value;
+});
 
-btnClear.addEventListener("click", clear);
-
+applyBtn.addEventListener("click", populateGrid);
+customGridBtn.addEventListener("click", setCustomGrid);
+clearBtn.addEventListener("click", clearGrid);
 container.addEventListener("mouseover", paintSquare);
+container.addEventListener("dragstart", (e) => e.preventDefault());
 
-console.log(container);
-
+// Init
 populateGrid();
-
-console.log(getRandomColor());
